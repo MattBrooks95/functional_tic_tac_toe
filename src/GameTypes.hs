@@ -35,7 +35,7 @@ getNextPlayer game = if null movesList
 		OPlayer -> XPlayer
 	where
 		movesList = moves game
-		lastMovePlayer = (player (last (moves game)))
+		lastMovePlayer = (player (head (moves game)))
 
 --plays out a game, and returns the winning player
 --should I put this in main?

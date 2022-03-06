@@ -18,6 +18,7 @@ import GameTypes (
 		Game,
 		Game(..),
 		board,
+		moves,
 		Move,
 		rowNumber,
 		Player,
@@ -59,9 +60,9 @@ makeMove game move =
 		--all of the fields except for the ones that you specificall declare to be
 		--something new, are copied. This saves you from typing out the whole
 		--constructor
-		1 -> game { board= Board (updateRow row1 move) row2 row3 }
-		2 -> game { board= Board row1 (updateRow row2 move) row3 }
-		3 -> game { board= Board row1 row2 (updateRow row3 move) }
+		1 -> game { board = Board (updateRow row1 move) row2 row3, moves = move : (moves game) }
+		2 -> game { board = Board row1 (updateRow row2 move) row3, moves = move : (moves game) }
+		3 -> game { board = Board row1 row2 (updateRow row3 move), moves = move : (moves game) }
 	where
 		row1 = getRow1 oldBoard
 		row2 = getRow2 oldBoard

@@ -8,7 +8,8 @@ import GameTypes (
 		createMove,
 		Player(..),
 		Player,
-		createMove
+		createMove,
+		moves
 	)
 
 import Game (makeMove)
@@ -34,6 +35,7 @@ gameLoop game = do
 	--	Just RowColInput -> 
 	--	Nothing -> 
 	let nextPlayer = getNextPlayer game 
+	print ("next player:" ++ show nextPlayer ++ " # of moves:" ++ show (length (moves game)))
 	let move = createMove (row userMove) (col userMove) nextPlayer
 	gameLoop (makeMove game move)
 
