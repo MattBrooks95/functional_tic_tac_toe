@@ -11,12 +11,37 @@ instance Show Player where
 		OPlayer -> "Player 2"
 
 data Move = Move { rowNumber :: Int, columnNumber :: Int, player :: Player } deriving Show
+
 createMove :: Int -> Int -> Player -> Move
 createMove rowNumber columnNumber player = (Move {rowNumber=rowNumber, columnNumber=columnNumber, player=player})
 
-data Game = Game { board :: Board, player1 :: Player, player2 :: Player, moves :: [Move] }
+data Game = Game {
+	board :: Board,
+	player1 :: Player,
+	player2 :: Player,
+	moves :: [Move]
+}
+
 instance Show Game where
 	show game = intercalate "\n" [show (board game), "player1: " ++ show (player1 game), "player2: " ++ show (player2 game), intercalate " " (map show (moves game))]
 		
 makeGame = Game { board = makeBoard, player1 = XPlayer, player2 = OPlayer, moves = [] }
+
+getNextPlayer :: Game -> Player
+getNextPlayer game = if null movesList
+	then XPlayer
+	else case lastMovePlayer of
+		XPlayer -> OPlayer
+		OPlayer -> XPlayer
+	where
+		movesList = moves game
+		lastMovePlayer = (player (last (moves game)))
+
+--plays out a game, and returns the winning player
+--should I put this in main?
+--playGame :: Game -> Player
+--playGame game player =
+--	if Just winningPlayer
+--	then winningPlayer
+--	else do
 
