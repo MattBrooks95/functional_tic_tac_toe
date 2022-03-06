@@ -1,6 +1,17 @@
 module Main where
 
-import GameTypes (Game, makeGame, Player(..), Player)
+import GameTypes (
+		Game,
+		Move,
+		makeGame,
+		getNextPlayer,
+		createMove,
+		Player(..),
+		Player,
+		createMove
+	)
+
+import Game (makeMove)
 
 --how do I make the game loop?
 main :: IO ()
@@ -22,7 +33,9 @@ gameLoop game = do
 	--case moveData of
 	--	Just RowColInput -> 
 	--	Nothing -> 
-	gameLoop game
+	let nextPlayer = getNextPlayer game 
+	let move = createMove (row userMove) (col userMove) nextPlayer
+	gameLoop (makeMove game move)
 
 data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 

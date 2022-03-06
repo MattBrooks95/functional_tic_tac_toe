@@ -1,7 +1,31 @@
 module Game where
 
-import BoardTypes (Board, Board(..), getRow1, getRow2, getRow3, Space, Row(..), Space(..), getSpace1, getSpace2, getSpace3)
-import GameTypes (Game, Game(..), board, Move, rowNumber, Player, Player(XPlayer, OPlayer), player, columnNumber)
+import BoardTypes (
+		Board,
+		Board(..),
+		getRow1,
+		getRow2,
+		getRow3,
+		Space,
+		Row(..),
+		Space(..),
+		getSpace1,
+		getSpace2,
+		getSpace3
+	)
+
+import GameTypes (
+		Game,
+		Game(..),
+		board,
+		Move,
+		rowNumber,
+		Player,
+		Player(XPlayer, OPlayer),
+		player,
+		columnNumber
+	)
+
 import Text.ParserCombinators.ReadP (between)
 
 updateSpace :: Space -> Move -> Space
@@ -11,7 +35,7 @@ updateSpace space move = newSpaceValue
 			XPlayer -> X
 			OPlayer -> O
 --
--- TODO I techincally need to handle column numbers past 4, because it's possible for a move
+-- TODO I technically need to handle column numbers past 4, because it's possible for a move
 -- to hold that type. But it would probably be better to just find way to ensure that
 -- a move's columnNumber can only be exactly 3
 updateRow :: Row -> Move -> Row
