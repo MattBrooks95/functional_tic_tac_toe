@@ -20,11 +20,13 @@ import GameTypes (
 		board,
 		moves,
 		Move,
+		createMove,
 		rowNumber,
 		Player,
 		Player(XPlayer, OPlayer),
 		player,
-		columnNumber
+		columnNumber,
+		getNextPlayer
 	)
 
 import Text.ParserCombinators.ReadP (between)
@@ -68,3 +70,35 @@ makeMove game move =
 		row2 = getRow2 oldBoard
 		row3 = getRow3 oldBoard
 		oldBoard = board game
+
+data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
+
+parseMove :: String -> Maybe RowColInput
+parseMove [] = Nothing
+parseMove (x:xs) = Just RowColInput { row=read [x] :: Int, col= read xs :: Int } 
+	
+
+gameLoop :: Game -> IO (Maybe Player)
+gameLoop game = do
+	print game
+	userMove <- getMove
+	--let userMove = getMove
+	print userMove
+	--let moveData = parseMove userInput
+	--case moveData of
+	--	Just RowColInput -> 
+	--	Nothing -> 
+	let nextPlayer = getNextPlayer game 
+	print ("next player:" ++ show nextPlayer ++ " # of moves:" ++ show (length (moves game)))
+	let move = createMove (row userMove) (col userMove) nextPlayer
+	gameLoop (makeMove game move)
+
+
+getMove :: IO (RowColInput)
+getMove = do
+	userInput <- getLine
+	print userInput
+	let moveInput = parseMove userInput in
+		case moveInput of
+			Just moveInput -> return moveInput
+			Nothing -> getMove
