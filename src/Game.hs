@@ -92,6 +92,7 @@ gameLoop game = do
 
 getMove :: IO (RowColInput)
 getMove = do
+	putStrLn "Please enter your move. For example, to input row 1 column 1 you would type \"11\""
 	userInput <- getLine
 	print userInput
 	let moveInput = parseMove userInput
@@ -100,9 +101,12 @@ getMove = do
 			if validateInput rowColInput
 			-- I have to use the 'return' keyword here to make sure that rowColInput is still IO
 			then return rowColInput
-			-- query the user for input again
-			else getMove
-		Nothing -> getMove
+			else tryAgain
+		Nothing -> tryAgain
+	-- query the user for input again
+	where tryAgain = do
+		putStrLn "Invalid input"
+		getMove
 
 validateInput :: RowColInput -> Bool
 validateInput rowColInput = inRange inputRow && inRange inputCol
