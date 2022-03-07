@@ -14,10 +14,6 @@ import GameTypes (
 
 import Game (
 		gameLoop,
-		makeMove,
-		RowColInput,
-		RowColInput(..),
-		parseMove
 	)
 
 --how do I make the game loop?

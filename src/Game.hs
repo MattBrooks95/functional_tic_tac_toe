@@ -1,5 +1,7 @@
 module Game where
 
+import Text.Read (readMaybe)
+
 import BoardTypes (
 		Board,
 		Board(..),
@@ -28,8 +30,6 @@ import GameTypes (
 		columnNumber,
 		getNextPlayer
 	)
-
-import Text.ParserCombinators.ReadP (between)
 
 updateSpace :: Space -> Move -> Space
 updateSpace space move = newSpaceValue
@@ -73,10 +73,6 @@ makeMove game move =
 
 data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 
-parseMove :: String -> Maybe RowColInput
-parseMove [] = Nothing
-parseMove (x:xs) = Just RowColInput { row=read [x] :: Int, col= read xs :: Int } 
-	
 
 gameLoop :: Game -> IO (Maybe Player)
 gameLoop game = do
@@ -98,7 +94,35 @@ getMove :: IO (RowColInput)
 getMove = do
 	userInput <- getLine
 	print userInput
-	let moveInput = parseMove userInput in
-		case moveInput of
-			Just moveInput -> return moveInput
-			Nothing -> getMove
+	let moveInput = parseMove userInput
+	case moveInput of
+		Just rowColInput ->
+			if validateInput rowColInput
+			-- I have to use the 'return' keyword here to make sure that rowColInput is still IO
+			then return rowColInput
+			-- query the user for input again
+			else getMove
+		Nothing -> getMove
+
+validateInput :: RowColInput -> Bool
+validateInput rowColInput = inRange inputRow && inRange inputCol
+	where
+		inRange = \x -> elem x [1..3]
+		inputRow = row rowColInput
+		inputCol = col rowColInput
+
+parseMove :: String -> Maybe RowColInput
+parseMove [] = Nothing
+--parseMove (x:xs) = RowColInput { row = readMaybe [x] :: Int, col= read xs :: Int } 
+parseMove (x:xs) = 
+	case row of
+		Just row ->
+			case col of
+				Just col -> return RowColInput { row = row, col = col }
+				Nothing -> Nothing
+		Nothing -> Nothing
+	where
+		row = readMaybe [x] :: Maybe Int
+		col = readMaybe xs :: Maybe Int
+	
+
