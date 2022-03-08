@@ -37,7 +37,7 @@ updateSpace space move = newSpaceValue
 		newSpaceValue = case player move of
 			XPlayer -> X
 			OPlayer -> O
---
+
 -- TODO I technically need to handle column numbers past 4, because it's possible for a move
 -- to hold that type. But it would probably be better to just find way to ensure that
 -- a move's columnNumber can only be exactly 3
@@ -73,7 +73,6 @@ makeMove game move =
 
 data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 
-
 gameLoop :: Game -> IO (Maybe Player)
 gameLoop game = do
 	print game
@@ -97,7 +96,10 @@ gameLoop game = do
 			let move = createMove (row userInput) (col userInput) nextPlayer
 			if isLegalMove game move
 			then return move
-			else getAndValidateMove game --how do I print a message before recursing?
+			else do
+				putStrLn ("row: " ++ (show (rowNumber move)) ++ " col: " ++ (show (columnNumber move)) ++ " is not a legal move, you must select an empty space")
+				getAndValidateMove game
+			--else getAndValidateMove game --how do I print a message before recursing? I guess I just needed parens???
 				--putStrLn move ++ " is not a legal move, you must select an empty space"
 				--getAndValidateMove game
 
