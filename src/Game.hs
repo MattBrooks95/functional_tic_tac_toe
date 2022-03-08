@@ -77,17 +77,30 @@ data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 gameLoop :: Game -> IO (Maybe Player)
 gameLoop game = do
 	print game
-	userMove <- getMove
-	--let userMove = getMove
-	print userMove
-	--let moveData = parseMove userInput
-	--case moveData of
-	--	Just RowColInput -> 
-	--	Nothing -> 
-	let nextPlayer = getNextPlayer game 
-	print ("next player:" ++ show nextPlayer ++ " # of moves:" ++ show (length (moves game)))
-	let move = createMove (row userMove) (col userMove) nextPlayer
+	--userMove <- getMove
+	----let userMove = getMove
+	--print userMove
+	----let moveData = parseMove userInput
+	----case moveData of
+	----	Just RowColInput -> 
+	----	Nothing -> 
+	--let nextPlayer = getNextPlayer game 
+	----print ("next player:" ++ show nextPlayer ++ " # of moves:" ++ show (length (moves game)))
+	--let move = createMove (row userMove) (col userMove) nextPlayer
+	move <- getAndValidateMove game
 	gameLoop (makeMove game move)
+	where
+		getAndValidateMove game = do
+			userInput <- getMove
+			print userInput
+			let nextPlayer = getNextPlayer game
+			let move = createMove (row userInput) (col userInput) nextPlayer
+			if isLegalMove game move
+			then return move
+			else getAndValidateMove game
+
+isLegalMove :: Game -> Move -> Bool
+isLegalMove game move = True
 
 
 getMove :: IO (RowColInput)
@@ -100,12 +113,13 @@ getMove = do
 		Just rowColInput ->
 			if validateInput rowColInput
 			-- I have to use the 'return' keyword here to make sure that rowColInput is still IO
+			--then return rowColInput
 			then return rowColInput
-			else tryAgain
-		Nothing -> tryAgain
+			else tryAgain "Invalid input"
+		Nothing -> tryAgain "Invalid input"
 	-- query the user for input again
-	where tryAgain = do
-		putStrLn "Invalid input"
+	where tryAgain string = do
+		putStrLn string
 		getMove
 
 validateInput :: RowColInput -> Bool
