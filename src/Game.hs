@@ -97,10 +97,40 @@ gameLoop game = do
 			let move = createMove (row userInput) (col userInput) nextPlayer
 			if isLegalMove game move
 			then return move
-			else getAndValidateMove game
+			else getAndValidateMove game --how do I print a message before recursing?
+				--putStrLn move ++ " is not a legal move, you must select an empty space"
+				--getAndValidateMove game
 
 isLegalMove :: Game -> Move -> Bool
-isLegalMove game move = True
+--isLegalMove game move = True
+isLegalMove game move = 
+	let targetSpace = getSpace game (rowNumber move) (columnNumber move) in
+	case targetSpace of
+		Blank -> True
+		_ -> False
+--	if (player move) == (player head moves game)
+--	then False
+--	else
+--		case targetSpace of
+--			Blank -> True
+--	where
+--		targetSpace = case (rowNumber move) of
+--			1 -> getRow1 game
+
+
+getSpace :: Game -> Int -> Int -> Space
+getSpace game rowNumber colNumber = space
+	where
+		space = case colNumber of
+			1 -> getSpace1 row
+			2 -> getSpace2 row
+			3 -> getSpace3 row
+		row = case rowNumber of
+			1 -> getRow1 gameBoard
+			2 -> getRow2 gameBoard
+			3 -> getRow3 gameBoard
+		gameBoard = board game
+
 
 
 getMove :: IO (RowColInput)
