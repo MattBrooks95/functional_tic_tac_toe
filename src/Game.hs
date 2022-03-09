@@ -19,6 +19,8 @@ import BoardTypes (
 import GameTypes (
 		Game,
 		Game(..),
+		GameResult,
+		GameResult(..),
 		board,
 		moves,
 		Move,
@@ -27,6 +29,8 @@ import GameTypes (
 		Player,
 		Player(XPlayer, OPlayer),
 		player,
+		player1,
+		player2,
 		columnNumber,
 		getNextPlayer
 	)
@@ -73,7 +77,7 @@ makeMove game move =
 
 data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 
-gameLoop :: Game -> IO (Maybe Player)
+gameLoop :: Game -> IO GameResult
 gameLoop game = do
 	print game
 	--userMove <- getMove
@@ -87,7 +91,13 @@ gameLoop game = do
 	----print ("next player:" ++ show nextPlayer ++ " # of moves:" ++ show (length (moves game)))
 	--let move = createMove (row userMove) (col userMove) nextPlayer
 	move <- getAndValidateMove game
-	gameLoop (makeMove game move)
+	let nextGameState = (makeMove game move)
+	let winner = getWinner nextGameState 
+	case winner of
+		Just winner -> return winner
+		Nothing -> gameLoop nextGameState
+
+	--gameLoop nextGameState
 	where
 		getAndValidateMove game = do
 			userInput <- getMove
@@ -175,4 +185,17 @@ parseMove (x:xs) =
 		row = readMaybe [x] :: Maybe Int
 		col = readMaybe xs :: Maybe Int
 	
+getWinner :: Game -> Maybe GameResult
+getWinner game = Nothing
+--getWinner game
+----	| xWon = Just (GameResult (player1 game))
+----	| oWon = Just (GameResult (player2 game))
+--	| xWon = Just (Player (player1 game))
+--	| oWon = Just (Player (player2 game))
+--	| boardFull = Just Tie
+--	| otherwise = Nothing
+--	where
+--		xWon = False
+--		oWon = False
+--		boardFull = False
 

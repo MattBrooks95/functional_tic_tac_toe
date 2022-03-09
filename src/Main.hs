@@ -20,8 +20,8 @@ import Game (
 main :: IO ()
 --main = putStr "Hello World"
 main = do
-	winner <- gameLoop makeGame
-	case winner of
-		Just player -> putStr (show player)
-		_ -> putStr "The game was a tie"
+	gameResult <- gameLoop makeGame
+	case gameResult of
+		Player player -> putStr (show player)
+		Tie -> putStr "The game was a tie"
 
