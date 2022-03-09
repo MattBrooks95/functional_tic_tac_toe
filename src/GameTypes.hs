@@ -22,7 +22,7 @@ data Game = Game {
 	moves :: [Move]
 }
 
-data GameResult = Player | Tie
+data GameResult = Player | Tie deriving Show
 
 instance Show Game where
 	show game = intercalate "\n" [show (board game), "player1: " ++ show (player1 game), "player2: " ++ show (player2 game), intercalate " " (map show (moves game))]

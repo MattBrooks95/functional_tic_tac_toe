@@ -4,6 +4,10 @@ import GameTypes (
 --		Game,
 		Move,
 		makeGame,
+		Player,
+		Player(..),
+		GameResult,
+		GameResult(..),
 --		getNextPlayer,
 --		createMove,
 --		Player(..),
@@ -22,6 +26,6 @@ main :: IO ()
 main = do
 	gameResult <- gameLoop makeGame
 	case gameResult of
-		Player player -> putStr (show player)
+		Player -> putStr (show gameResult)
 		Tie -> putStr "The game was a tie"
 
