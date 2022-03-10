@@ -27,7 +27,8 @@ import GameTypes (
 		createMove,
 		rowNumber,
 		Player,
-		Player(XPlayer, OPlayer),
+		--Player(XPlayer, OPlayer),
+		Player(..),
 		player,
 		player1,
 		player2,
@@ -186,16 +187,19 @@ parseMove (x:xs) =
 		col = readMaybe xs :: Maybe Int
 	
 getWinner :: Game -> Maybe GameResult
-getWinner game = Nothing
---getWinner game
-----	| xWon = Just (GameResult (player1 game))
-----	| oWon = Just (GameResult (player2 game))
---	| xWon = Just (Player (player1 game))
---	| oWon = Just (Player (player2 game))
---	| boardFull = Just Tie
---	| otherwise = Nothing
---	where
---		xWon = False
---		oWon = False
---		boardFull = False
+--getWinner game = Just Tie
+--getWinner game = Just XPlayer
+getWinner game
+--	| xWon = Just (GameResult (player1 game))
+--	| oWon = Just (GameResult (player2 game))
+	--I needed to change the GameResult def to be Player Player | Tie
+	--in order for this to work, because Player is a data constructor that expects a Player type
+	| xWon = Just (Player (player1 game))
+	| oWon = Just (Player (player2 game))
+	| boardFull = Just Tie
+	| otherwise = Nothing
+	where
+		xWon = False
+		oWon = False
+		boardFull = False
 

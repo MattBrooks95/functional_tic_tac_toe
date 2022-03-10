@@ -26,6 +26,6 @@ main :: IO ()
 main = do
 	gameResult <- gameLoop makeGame
 	case gameResult of
-		Player -> putStr (show gameResult)
+		Player player -> print (show player ++ " wins!")
 		Tie -> putStr "The game was a tie"
 
