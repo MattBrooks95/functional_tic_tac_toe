@@ -25,7 +25,8 @@ main :: IO ()
 --main = putStr "Hello World"
 main = do
 	gameResult <- gameLoop makeGame
+	print (snd gameResult)
 	case gameResult of
-		Player player -> print (show player ++ " wins!")
-		Tie -> putStr "The game was a tie"
+		(Player player, _) -> print (show player ++ " wins!")
+		(Tie, _) -> putStr "The game was a tie"
 

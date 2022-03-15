@@ -63,16 +63,17 @@ getSpacesFromBoard board = concatMap getSpacesFromRow [
 --inversing a matrix
 threeInARow :: Space -> Board -> Bool
 threeInARow space board =
-	allEqualSpace space (take 3 spaces) -- top row
-	|| allEqualSpace space (take 3 (drop 3 spaces)) -- middle row
-	|| allEqualSpace space (take 3 (drop 6 spaces)) -- bottom row
-	|| allEqualSpace space [spaces !! 0, spaces !! 3, spaces !! 6] --left column
-	|| allEqualSpace space [spaces !! 1, spaces !! 4, spaces !! 7] --middle column
-	|| allEqualSpace space [spaces !! 2, spaces !! 5, spaces !! 8] --right column
-	|| allEqualSpace space [spaces !! 0, spaces !! 4, spaces !! 8] --top left to bottom right diagonal
-	|| allEqualSpace space [spaces !! 2, spaces !! 4, spaces !! 6] --top right to bottom left diagonal
+	allEqualPassedSpace (take 3 spaces) -- top row
+	|| allEqualPassedSpace (take 3 (drop 3 spaces)) -- middle row
+	|| allEqualPassedSpace (take 3 (drop 6 spaces)) -- bottom row
+	|| allEqualPassedSpace [spaces !! 0, spaces !! 3, spaces !! 6] --left column
+	|| allEqualPassedSpace [spaces !! 1, spaces !! 4, spaces !! 7] --middle column
+	|| allEqualPassedSpace [spaces !! 2, spaces !! 5, spaces !! 8] --right column
+	|| allEqualPassedSpace [spaces !! 0, spaces !! 4, spaces !! 8] --top left to bottom right diagonal
+	|| allEqualPassedSpace [spaces !! 2, spaces !! 4, spaces !! 6] --top right to bottom left diagonal
 	where
 		spaces = getSpacesFromBoard board
+		allEqualPassedSpace = allEqualSpace space
 		allEqualSpace space spaces = length (filter (\x -> x == space) spaces) == length spaces
 
 isBoardFull :: Board -> Bool

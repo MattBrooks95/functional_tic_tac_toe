@@ -80,7 +80,7 @@ makeMove game move =
 
 data RowColInput = RowColInput { row :: Int, col :: Int } deriving Show
 
-gameLoop :: Game -> IO GameResult
+gameLoop :: Game -> IO (GameResult, Game)
 gameLoop game = do
 	print game
 	--userMove <- getMove
@@ -97,7 +97,7 @@ gameLoop game = do
 	let nextGameState = (makeMove game move)
 	let winner = getWinner nextGameState 
 	case winner of
-		Just winner -> return winner
+		Just winner -> return (winner, nextGameState)
 		Nothing -> gameLoop nextGameState
 
 	--gameLoop nextGameState

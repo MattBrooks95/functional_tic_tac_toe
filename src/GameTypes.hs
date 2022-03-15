@@ -39,11 +39,3 @@ getNextPlayer game = if null movesList
 		movesList = moves game
 		lastMovePlayer = (player (head (moves game)))
 
---plays out a game, and returns the winning player
---should I put this in main?
---playGame :: Game -> Player
---playGame game player =
---	if Just winningPlayer
---	then winningPlayer
---	else do
-
