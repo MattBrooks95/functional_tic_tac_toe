@@ -5,9 +5,11 @@ import Text.Read (readMaybe)
 import BoardTypes (
 		Board,
 		Board(..),
+		isBoardFull,
 		getRow1,
 		getRow2,
 		getRow3,
+		threeInARow,
 		Space,
 		Row(..),
 		Space(..),
@@ -199,7 +201,7 @@ getWinner game
 	| boardFull = Just Tie
 	| otherwise = Nothing
 	where
-		xWon = False
-		oWon = False
-		boardFull = False
+		xWon = threeInARow X (board game)
+		oWon = threeInARow O (board game)
+		boardFull = isBoardFull (board game)
 
